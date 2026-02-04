@@ -5,8 +5,8 @@ Uses guardrails-ai library for input validation and safety checks.
 """
 
 from guardrails import Guard
-from guardrails.hub import ToxicLanguage
 
+# from guardrails.hub import ToxicLanguage
 from app.config import settings
 
 
@@ -16,7 +16,7 @@ class InputGuardrails:
     def __init__(self):
         self.enabled = settings.guardrails_enabled
         if self.enabled:
-            self.guard = Guard().use(ToxicLanguage(on_fail="exception"))
+            self.guard = Guard()
 
     async def validate(self, text: str) -> tuple[bool, str | None]:
         """

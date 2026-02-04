@@ -12,6 +12,7 @@ from app.database import Base
 # Import all models so they are registered with Base.metadata
 from app.users.models import User  # noqa: F401
 from app.conversations.models import Conversation, Message, Summary  # noqa: F401
+from app.auth.models import RefreshToken  # noqa: F401
 
 config = context.config
 

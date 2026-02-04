@@ -25,7 +25,11 @@ class User(Base):
     conversations: Mapped[list["Conversation"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
+    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 # Avoid circular import
+from app.auth.models import RefreshToken  # noqa: E402, F401
 from app.conversations.models import Conversation  # noqa: E402, F401
