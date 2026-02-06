@@ -14,14 +14,13 @@ class TokenPayload(BaseModel):
 
 
 class LoginRequest(BaseModel):
-    username: str
+    email: EmailStr
     password: str
 
 
 class RegisterRequest(BaseModel):
     full_name: str
     email: EmailStr
-    username: str
     password: str
 
 

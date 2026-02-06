@@ -17,24 +17,19 @@ from app.auth.utils import (
     verify_password,
 )
 from app.users.models import User
-from app.users.service import get_user_by_email, get_user_by_id, get_user_by_username
+from app.users.service import get_user_by_email, get_user_by_id
 
 
 async def register_user(db: AsyncSession, data: RegisterRequest) -> User:
-    """Register a new user with email and username validation."""
+    """Register a new user with email validation."""
     if await get_user_by_email(db, data.email):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered"
-        )
-    if await get_user_by_username(db, data.username):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already taken"
         )
 
     user = User(
         full_name=data.full_name,
         email=data.email,
-        username=data.username,
         password_hash=hash_password(data.password),
     )
     db.add(user)
@@ -43,13 +38,13 @@ async def register_user(db: AsyncSession, data: RegisterRequest) -> User:
     return user
 
 
-async def authenticate_user(db: AsyncSession, username: str, password: str) -> User:
-    """Authenticate user by username and password."""
-    user = await get_user_by_username(db, username)
+async def authenticate_user(db: AsyncSession, email: str, password: str) -> User:
+    """Authenticate user by email and password."""
+    user = await get_user_by_email(db, email)
     if not user or not verify_password(password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Incorrect email or password",
         )
     return user
 

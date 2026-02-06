@@ -15,7 +15,6 @@ class Gender(str, Enum):
 class UserBase(BaseModel):
     full_name: str
     email: EmailStr
-    username: str
     gender: Gender | None = None
     age: int | None = None
 

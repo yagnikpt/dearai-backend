@@ -17,11 +17,6 @@ async def get_user_by_email(db: AsyncSession, email: str) -> User | None:
     return result.scalar_one_or_none()
 
 
-async def get_user_by_username(db: AsyncSession, username: str) -> User | None:
-    result = await db.execute(select(User).where(User.username == username))
-    return result.scalar_one_or_none()
-
-
 async def update_user(db: AsyncSession, user_id: UUID, data: UserUpdate) -> User | None:
     update_data = data.model_dump(exclude_unset=True)
     if not update_data:

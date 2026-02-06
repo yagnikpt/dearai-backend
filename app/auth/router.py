@@ -40,7 +40,7 @@ async def login(db: DbSession, data: LoginRequest):
     The refresh token is stored in the database for session management.
     Use the refresh token to obtain new access tokens when they expire.
     """
-    user = await authenticate_user(db, data.username, data.password)
+    user = await authenticate_user(db, data.email, data.password)
     return await create_tokens_with_session(db, user.id)
 
 
