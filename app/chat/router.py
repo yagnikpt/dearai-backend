@@ -25,7 +25,7 @@ async def voice_chat(
     conversation_id: UUID = Form(...),
     audio: UploadFile = File(...),
 ):
-    """
+    """`
     Send a voice message and receive a text response.
 
     The audio file should be in a supported format (wav, mp3, webm, etc.)

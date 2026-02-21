@@ -8,7 +8,8 @@ from app.chat.handlers.text import SYSTEM_PROMPT
 from app.chat.schemas import VoiceChatResponse
 from app.context import summary_context_provider
 from app.conversations.service import add_message, get_conversation_messages
-from app.emotion import hume_detector
+
+# from app.emotion import hume_detector
 from app.guardrails import input_guardrails, output_guardrails
 from app.llm import LLMMessage, get_llm
 from app.speech import get_stt, get_tts
@@ -41,7 +42,7 @@ async def handle_voice_chat(
     transcript = await stt.transcribe(audio_data)
 
     # 2. Detect emotions
-    emotion_result = await hume_detector.detect_from_audio(audio_data)
+    # emotion_result = await hume_detector.detect_from_audio(audio_data)
 
     # 3. Validate input
     is_valid, error = await input_guardrails.validate(transcript)
@@ -63,8 +64,8 @@ async def handle_voice_chat(
     system_prompt = SYSTEM_PROMPT
     if context:
         system_prompt += f"\n\nContext:\n{context}"
-    if emotion_result:
-        system_prompt += f"\n\nUser's detected emotional state: {emotion_result.dominant_emotion} (confidence: {emotion_result.confidence:.2f})"
+    # if emotion_result:
+    #     system_prompt += f"\n\nUser's detected emotional state: {emotion_result.dominant_emotion} (confidence: {emotion_result.confidence:.2f})"
 
     # 7. Send to LLM
     llm = get_llm()
@@ -84,8 +85,8 @@ async def handle_voice_chat(
 
     # 10. Save messages
     metadata = None
-    if emotion_result:
-        metadata = {"emotion": emotion_result.model_dump()}
+    # if emotion_result:
+    #     metadata = {"emotion": emotion_result.model_dump()}
 
     await add_message(db, conversation_id, user_id, "user", transcript, "voice", metadata=metadata)
     assistant_msg = await add_message(
@@ -96,6 +97,6 @@ async def handle_voice_chat(
     return VoiceChatResponse(
         message_id=assistant_msg.id,
         content=response_content,
-        emotion=emotion_result,
+        emotion=None,
         is_crisis=is_crisis,
     ), audio_response

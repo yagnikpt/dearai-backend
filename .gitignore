@@ -11,6 +11,7 @@ build/
 eggs/
 *.manifest
 *.spec
+.ruff_cache
 
 # Virtual environments
 .venv/
@@ -46,3 +47,5 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+.agents
